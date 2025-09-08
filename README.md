@@ -2,7 +2,7 @@
 
 My rather opinionated C project template.
 
-Don't forget to change the LICENSE.
+Don't forget to change the [LICENSE](https://choosealicense.com/).
 
 ## Development
 
