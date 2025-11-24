@@ -63,16 +63,7 @@ setup_vscode() {
 }
 
 fmt() {
-    (
-        set -eu
-
-        #shellcheck disable=2016
-        find . -regex '.*\.$c\|h$' -exec clang-format -i {} \;
-
-        find . -name 'CMakeLists.txt' -exec cmake-format -i {} \;
-
-        nix fmt .
-    )
+    ./format.sh
 }
 
 export CC=clang

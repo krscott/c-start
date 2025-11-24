@@ -7,7 +7,7 @@ stdenv.mkDerivation {
   name = "c-start";
   src = lib.cleanSource ./.;
 
-  nativeBuildInputs = [cmake];
+  nativeBuildInputs = [ cmake ];
 
   configurePhase = ''
     cmake -B build

@@ -3,20 +3,23 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    flake-utils,
-  }: let
-    supportedSystems = [
-      "x86_64-linux"
-      "aarch64-linux"
-      "x86_64-darwin"
-      "aarch64-darwin"
-    ];
-  in
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+    }:
+    let
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
+    in
     flake-utils.lib.eachSystem supportedSystems (
-      system: let
+      system:
+      let
         pkgs = nixpkgs.legacyPackages.${system};
 
         # Final derivation including any overrides made to output package
@@ -24,7 +27,6 @@
 
         devPkgs = with pkgs; [
           shfmt
-          alejandra
           cmake-format
           clang-tools # NOTE: clang-tools must come before clang
           clang
@@ -40,7 +42,8 @@
             }
           );
         };
-      in {
+      in
+      {
         packages = {
           c-start = pkgs.callPackage ./. {
             stdenv = pkgs.clangStdenv;
@@ -59,7 +62,7 @@
 
         devShells = {
           default = pkgs.mkShell {
-            inputsFrom = [c-start];
+            inputsFrom = [ c-start ];
             nativeBuildInputs = devPkgs;
             shellHook = ''
               source dev_shell.sh
@@ -70,11 +73,10 @@
         apps = {
           format = mkApp ''
             ./format.sh
-            alejandra ./*.nix
           '';
         };
 
-        formatter = pkgs.alejandra;
+        formatter = pkgs.nixfmt-rfc-style;
       }
     );
 }

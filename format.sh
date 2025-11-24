@@ -5,3 +5,5 @@ cd "$(dirname "$(readlink -f -- "$0")")"
 
 find src/ -type f -name '*.c' -exec clang-format -i {} +
 find src/ -type f -name '*.h' -exec clang-format -i {} +
+find . -type f -name 'CMakeLists.txt' -exec cmake-format -i {} \;
+find . -type f -name '*.nix' -exec nix fmt {} \;
