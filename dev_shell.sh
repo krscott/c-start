@@ -1,6 +1,6 @@
 cfg() {
     (
-        set -eu
+        set -eux
 
         rm -rf build/
         cmake -B build
@@ -15,7 +15,10 @@ bld() {
             cfg
         fi
 
-        cmake --build build
+        (
+            set -x
+            cmake --build build
+        )
 
         if [ "$CMAKE_BUILD_TYPE" = "Debug" ]; then
             mkdir -p .compile-db
@@ -29,6 +32,8 @@ run() {
         set -eu
 
         bld
+
+        set -x
         ./build/app/c-start "$@"
     )
 }
@@ -39,6 +44,27 @@ crun() {
 
         cfg
         run "$@"
+    )
+}
+
+tst() {
+    (
+        set -eu
+
+        bld
+        cd build/test
+
+        set -x
+        ctest --output-on-failure
+    )
+}
+
+ctst() {
+    (
+        set -eu
+
+        cfg
+        tst
     )
 }
 

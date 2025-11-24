@@ -12,3 +12,4 @@ AllowAllArgumentsOnNextLine: false
 AllowShortBlocksOnASingleLine: false
 BinPackArguments: false
 BinPackParameters: false
+IndentCaseLabels: true

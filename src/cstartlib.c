@@ -19,29 +19,33 @@ static bool str2int(char const *const str, long *const out)
     return (errno == 0) && (*end == '\0');
 }
 
-bool cstart_print_str_sum(char const *a, char const *b)
+enum cstart_strsum_err
+cstart_strsum(char const *a, char const *b, long *const out)
 {
     bool ok = true;
+    enum cstart_strsum_err err = CSTART_STRSUM_OK;
 
     long ai;
     long bi;
 
+    *out = 0;
+
     ok = str2int(a, &ai);
     if (!ok)
     {
-        printf("Not an int: %s\n", a);
+        err = CSTART_STRSUM_NOT_AN_INT_A;
         goto error;
     }
 
     ok = str2int(b, &bi);
     if (!ok)
     {
-        printf("Not an int: %s\n", b);
+        err = CSTART_STRSUM_NOT_AN_INT_B;
         goto error;
     }
 
-    printf("%ld + %ld = %ld\n", ai, bi, ai + bi);
+    *out = ai + bi;
 
 error:
-    return ok;
+    return err;
 }
