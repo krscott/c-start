@@ -29,7 +29,7 @@ run() {
         set -eu
 
         bld
-        ./build/src/c-start "$@"
+        ./build/app/c-start "$@"
     )
 }
 
@@ -60,6 +60,19 @@ o0() {
 setup_vscode() {
     mkdir -p .vscode/
     cp dev/vscode/* .vscode/
+}
+
+fmt() {
+    (
+        set -eu
+
+        #shellcheck disable=2016
+        find . -regex '.*\.$c\|h$' -exec clang-format -i {} \;
+
+        find . -name 'CMakeLists.txt' -exec cmake-format -i {} \;
+
+        nix fmt .
+    )
 }
 
 export CC=clang

@@ -1,6 +1,5 @@
-add_executable(${PROJECT_NAME} main.c)
+add_library(cstartlib cstartlib.c)
 
-# target_sources(${PROJECT_NAME} PRIVATE
-#     file.c
-# )
+target_include_directories(cstartlib PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
+# target_sources(cstartlib PRIVATE file.c)

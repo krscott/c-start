@@ -25,17 +25,20 @@
         devPkgs = with pkgs; [
           shfmt
           alejandra
+          cmake-format
           clang-tools # NOTE: clang-tools must come before clang
           clang
         ];
 
         mkApp = text: {
           type = "app";
-          program = pkgs.lib.getExe (pkgs.writeShellApplication {
-            name = "app";
-            runtimeInputs = devPkgs;
-            inherit text;
-          });
+          program = pkgs.lib.getExe (
+            pkgs.writeShellApplication {
+              name = "app";
+              runtimeInputs = devPkgs;
+              inherit text;
+            }
+          );
         };
       in {
         packages = {
