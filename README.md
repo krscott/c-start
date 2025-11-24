@@ -50,7 +50,5 @@ Nix home-manager setup
         llvm-vs-code-extensions.lldb-dap
         llvm-vs-code-extensions.vscode-clangd
       ];
-      userSettings = lib.importJSON ./settings.json;
-      keybindings = lib.importJSON ./keybindings.json;
     };
 ```
