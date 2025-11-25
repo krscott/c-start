@@ -2,10 +2,12 @@
   cmake,
   lib,
   stdenv,
+  doCheck ? false,
 }:
 stdenv.mkDerivation {
   name = "c-start";
   src = lib.cleanSource ./.;
+  inherit doCheck;
 
   nativeBuildInputs = [ cmake ];
 
@@ -25,5 +27,12 @@ stdenv.mkDerivation {
     else
       cmake --install build --prefix $out
     fi
+  '';
+
+  checkPhase = ''
+    (
+      cd build/test
+      ctest --output-on-failure
+    )
   '';
 }

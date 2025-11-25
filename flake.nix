@@ -23,7 +23,7 @@
         pkgs = nixpkgs.legacyPackages.${system};
 
         # Final derivation including any overrides made to output package
-        inherit (self.packages.${system}) c-start;
+        inherit (self.packages.${system}) c-start c-start-gcc;
 
         devPkgs = with pkgs; [
           shfmt
@@ -58,6 +58,13 @@
           };
 
           default = c-start;
+
+          c-start-test = c-start.override {
+            doCheck = true;
+          };
+          c-start-gcc-test = c-start-gcc.override {
+            doCheck = true;
+          };
         };
 
         devShells = {
