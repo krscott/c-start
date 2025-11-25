@@ -54,9 +54,9 @@ endif()
 add_subdirectory(src)
 add_subdirectory(app)
 
-set_target_properties(cstartlib ${PROJECT_NAME} PROPERTIES C_STANDARD 11)
+set_target_properties(cstartlib c-start PROPERTIES C_STANDARD 11)
 
-install(TARGETS ${PROJECT_NAME})
+install(TARGETS c-start)
 
 enable_testing()
 add_subdirectory(test)
