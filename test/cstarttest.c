@@ -28,6 +28,7 @@ static void check_fail_b(void)
     do                                                                         \
     {                                                                          \
         printf("Test: " #test "\n");                                           \
+        fflush(stdout);                                                        \
         test();                                                                \
     } while (0)
 
