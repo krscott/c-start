@@ -11,21 +11,19 @@ proj_upper=$(echo "$proj" | tr '[:lower:]' '[:upper:]')
 
 cd "$(dirname "$(readlink -f -- "$0")")"
 
-# Example shellcheck disable
-## shellcheck disable=SC2086 # allow word splitting
-
 for file in $(git ls-files | grep -v 'init-template.sh'); do
     if [ -e "$file" ]; then
+        echo "Processing: $file"
         sed -i "s/cstart/$proj/g" "$file"
         sed -i "s/c-start/$proj/g" "$file"
         sed -i "s/CSTART/$proj_upper/g" "$file"
-        echo "Processed: $file"
     fi
 done
 
+echo "Renaming files"
 mv include/cstartlib.h "include/${proj}lib.h"
 mv src/cstartlib.c "src/${proj}lib.c"
 mv test/cstarttest.c "src/${proj}test.c"
 
-# self-deletion
+echo "Deleting init script"
 rm -- "$0"
