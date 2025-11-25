@@ -26,3 +26,6 @@ done
 mv include/cstartlib.h "include/${proj}lib.h"
 mv src/cstartlib.c "src/${proj}lib.c"
 mv test/cstarttest.c "src/${proj}test.c"
+
+# self-deletion
+rm -- "$0"
