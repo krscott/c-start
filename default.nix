@@ -12,7 +12,9 @@ stdenv.mkDerivation {
 
   nativeBuildInputs = [ cmake ];
 
-  buildInputs = [ kcli ];
+  buildInputs = [
+    (kcli.override { inherit stdenv; })
+  ];
 
   configurePhase = ''
     cmake -B build
