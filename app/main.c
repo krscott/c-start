@@ -39,7 +39,7 @@ static struct opts opts_parse(int const argc, char const *const *const argv)
     return opts;
 }
 
-int main(int const argc, char const *const *argv)
+int main(int const argc, char const *const *const argv)
 {
     struct opts opts = opts_parse(argc, argv);
 
