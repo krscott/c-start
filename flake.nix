@@ -11,11 +11,6 @@
       url = "github:krscott/kcli";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # kcli-src = {
-    #   url = "github:krscott/kcli";
-    #   flake = false;
-    # };
   };
 
   outputs =
