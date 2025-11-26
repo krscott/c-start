@@ -34,6 +34,9 @@ stdenv.mkDerivation {
     else
       cmake --install build --prefix $out
     fi
+
+    mkdir -p "$out/include"
+    cp include/*.h "$out/include"
   '';
 
   checkPhase = ''
