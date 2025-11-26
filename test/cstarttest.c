@@ -1,27 +1,11 @@
-#include "cstartlib.h"
+#include "cstart.h"
 #include <assert.h>
 #include <stdio.h>
 
-static void check_ok(void)
+static void t_sum(void)
 {
-    long out;
-    enum cstart_strsum_err err = cstart_strsum("11", "22", &out);
-    assert(err == CSTART_STRSUM_OK);
-    assert(out == 33);
-}
-
-static void check_fail_a(void)
-{
-    long out;
-    enum cstart_strsum_err err = cstart_strsum("11a", "22", &out);
-    assert(err == CSTART_STRSUM_NOT_AN_INT_A);
-}
-
-static void check_fail_b(void)
-{
-    long out;
-    enum cstart_strsum_err err = cstart_strsum("11", "foo", &out);
-    assert(err == CSTART_STRSUM_NOT_AN_INT_B);
+    //
+    assert(cstart_sum(1.0, 2.0) == 3.0);
 }
 
 #define RUN(test)                                                              \
@@ -34,9 +18,7 @@ static void check_fail_b(void)
 
 int main(void)
 {
-    RUN(check_ok);
-    RUN(check_fail_a);
-    RUN(check_fail_b);
+    RUN(t_sum);
 
     return 0;
 }

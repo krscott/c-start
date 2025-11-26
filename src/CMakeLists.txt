@@ -1,6 +1,6 @@
-add_library(cstartlib cstartlib.c)
+add_library(cstart cstart.c)
 
-target_include_directories(cstartlib PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(cstart PUBLIC ${PROJECT_SOURCE_DIR}/include)
 # target_sources(cstartlib PRIVATE file.c)
 
-install(TARGETS cstartlib)
+install(TARGETS cstart)

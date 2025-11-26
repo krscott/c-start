@@ -2,6 +2,7 @@
   cmake,
   lib,
   stdenv,
+  kcli,
   doCheck ? false,
 }:
 stdenv.mkDerivation {
@@ -10,6 +11,8 @@ stdenv.mkDerivation {
   inherit doCheck;
 
   nativeBuildInputs = [ cmake ];
+
+  buildInputs = [ kcli ];
 
   configurePhase = ''
     cmake -B build

@@ -1,37 +1,56 @@
-#include "cstartlib.h"
+#include "cstart.h"
+#include "kcli.h"
+#include <math.h>
+#include <stdbool.h>
 #include <stdio.h>
+
+struct opts
+{
+    double a;
+    double b;
+    bool verbose;
+};
+
+static struct opts opts_parse(int const argc, char const *const *const argv)
+{
+    struct opts opts = {0};
+
+    KCLI_PARSE(
+        argc,
+        argv,
+        {
+            .pos_name = "a",
+            .ptr_double = &opts.a,
+            .help = "First number",
+        },
+        {
+            .pos_name = "b",
+            .ptr_double = &opts.b,
+            .help = "Second number",
+        },
+        {
+            .short_name = 'v',
+            .long_name = "verbose",
+            .ptr_flag = &opts.verbose,
+            .help = "Enable extra logging",
+        },
+    );
+
+    return opts;
+}
 
 int main(int const argc, char const *const *argv)
 {
-    int err = 0;
-    long sum;
+    struct opts opts = opts_parse(argc, argv);
 
-    if (argc != 3)
+    if (opts.verbose)
     {
-        err = 1;
-        printf("Usage: %s INT INT\n", argv[0]);
-        goto error;
+        fprintf(stderr, "c-start: Adding %f + %f...\n", opts.a, opts.b);
     }
 
-    switch (cstart_strsum(argv[1], argv[2], &sum))
-    {
-        case CSTART_STRSUM_OK:
-            printf("%s + %s = %ld\n", argv[1], argv[2], sum);
-            break;
-        case CSTART_STRSUM_NOT_AN_INT_A:
-            printf("Not an int: %s\n", argv[1]);
-            err = 2;
-            break;
-        case CSTART_STRSUM_NOT_AN_INT_B:
-            printf("Not an int: %s\n", argv[2]);
-            err = 2;
-            break;
-    }
-    {
-        err = 2;
-        goto error;
-    }
+    double const sum = cstart_sum(opts.a, opts.b);
 
-error:
-    return err;
+    printf("%f\n", sum);
+
+    return isnan(sum) ? 1 : 0;
 }

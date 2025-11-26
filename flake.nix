@@ -6,6 +6,16 @@
       url = "github:numtide/flake-utils";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    kcli = {
+      url = "github:krscott/kcli";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # kcli-src = {
+    #   url = "github:krscott/kcli";
+    #   flake = false;
+    # };
   };
 
   outputs =
@@ -13,6 +23,7 @@
       self,
       nixpkgs,
       flake-utils,
+      kcli,
     }:
     let
       supportedSystems = [
@@ -30,12 +41,15 @@
         # Final derivation including any overrides made to output package
         inherit (self.packages.${system}) c-start c-start-gcc;
 
-        devPkgs = with pkgs; [
-          shfmt
-          cmake-format
-          clang-tools # NOTE: clang-tools must come before clang
-          clang
-        ];
+        devPkgs =
+          with pkgs;
+          [
+            shfmt
+            cmake-format
+            clang-tools # NOTE: clang-tools must come before clang
+            clang
+          ]
+          ++ c-start.buildInputs;
 
         mkApp = text: {
           type = "app";
@@ -51,6 +65,7 @@
       {
         packages = {
           c-start = pkgs.callPackage ./. {
+            inherit (kcli.packages.${system}) kcli;
             stdenv = pkgs.clangStdenv;
           };
 
