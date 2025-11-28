@@ -2,6 +2,10 @@
 #include <assert.h>
 #include <stdio.h>
 
+#ifdef NDEBUG
+#error "Asserts are disabled in release"
+#endif
+
 static void t_sum(void)
 {
     //
