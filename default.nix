@@ -36,7 +36,7 @@ stdenv.mkDerivation {
     fi
 
     mkdir -p "$out/include"
-    cp include/*.h "$out/include"
+    cp -r include "$out"
   '';
 
   checkPhase = ''
