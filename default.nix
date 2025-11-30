@@ -3,6 +3,7 @@
   lib,
   stdenv,
   kcli,
+  ktl,
   doCheck ? false,
 }:
 stdenv.mkDerivation {
@@ -14,6 +15,7 @@ stdenv.mkDerivation {
 
   buildInputs = [
     (kcli.override { inherit stdenv; })
+    (ktl.override { inherit stdenv; })
   ];
 
   configurePhase = ''

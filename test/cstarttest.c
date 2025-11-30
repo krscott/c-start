@@ -1,15 +1,31 @@
 #include "cstart.h"
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #ifdef NDEBUG
 #error "Asserts are disabled in release"
 #endif
 
-static void t_sum(void)
+static void t_greet_name(void)
 {
-    //
-    assert(cstart_sum(1.0, 2.0) == 3.0);
+    char *greeting = cstart_create_greeting("Kris");
+    assert(greeting);
+
+    assert(0 == strcmp(greeting, "Hello, Kris!"));
+
+    free(greeting);
+}
+
+static void t_greet_null(void)
+{
+    char *greeting = cstart_create_greeting(NULL);
+    assert(greeting);
+
+    assert(0 == strcmp(greeting, "Hello, World!"));
+
+    free(greeting);
 }
 
 #define RUN(test)                                                              \
@@ -22,7 +38,8 @@ static void t_sum(void)
 
 int main(void)
 {
-    RUN(t_sum);
+    RUN(t_greet_name);
+    RUN(t_greet_null);
 
     return 0;
 }

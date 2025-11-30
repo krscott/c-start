@@ -1,13 +1,12 @@
 #include "cstart.h"
 #include "kcli.h"
-#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 struct opts
 {
-    double a;
-    double b;
+    char const *name;
     bool verbose;
 };
 
@@ -19,14 +18,10 @@ static struct opts opts_parse(int const argc, char const *const *const argv)
         argc,
         argv,
         {
-            .pos_name = "a",
-            .ptr_double = &opts.a,
-            .help = "First number",
-        },
-        {
-            .pos_name = "b",
-            .ptr_double = &opts.b,
-            .help = "Second number",
+            .pos_name = "name",
+            .ptr_str = &opts.name,
+            .optional = true,
+            .help = "Name to greet",
         },
         {
             .short_name = 'v',
@@ -45,12 +40,14 @@ int main(int const argc, char const *const *const argv)
 
     if (opts.verbose)
     {
-        fprintf(stderr, "c-start: Adding %f + %f...\n", opts.a, opts.b);
+        fprintf(stderr, "c-start: Creating greeting...\n");
     }
 
-    double const sum = cstart_sum(opts.a, opts.b);
+    char *greeting = cstart_create_greeting(opts.name);
 
-    printf("%f\n", sum);
+    printf("%s\n", greeting);
 
-    return isnan(sum) ? 1 : 0;
+    free(greeting);
+
+    return greeting ? 0 : 1;
 }
