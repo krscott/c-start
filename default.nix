@@ -12,13 +12,11 @@ stdenv.mkDerivation {
   src = lib.cleanSource ./.;
   inherit doCheck;
 
-  nativeBuildInputs = [
-    cmake
-    (ktest.override { inherit stdenv; })
-  ];
+  nativeBuildInputs = [ cmake ];
 
   buildInputs = [
     (kcli.override { inherit stdenv; })
+    (ktest.override { inherit stdenv; })
     (ktl.override { inherit stdenv; })
   ];
 
