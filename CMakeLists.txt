@@ -47,7 +47,7 @@ if(CMAKE_BUILD_TYPE MATCHES "Debug")
   endif()
 else()
   message("Release build")
-  set(CMAKE_UNITY_BUILD ON)
+  # set(CMAKE_UNITY_BUILD ON)
 
   add_compile_options(-Os)
 endif()
