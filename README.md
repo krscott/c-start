@@ -7,7 +7,9 @@ To start a project with this template, run:
 ./init-template.sh new_project_name
 ```
 
-Don't forget to change the [LICENSE](https://choosealicense.com/).
+It comes with some of my personal C libraries. Delete what you don't need.
+
+Don't forget to [change](https://choosealicense.com/) the LICENSE.
 
 ## Development
 
@@ -31,11 +33,16 @@ Useful development shell aliases
 ```
 source dev_shell.sh
 
-# Reconfigure cmake
+# (Re)Configure cmake
 cfg
 
 # Build and run
 run
+crun
+
+# Run tests
+tst
+ctst
 
 # Setup vscode debugging
 setup_vscode
