@@ -29,7 +29,8 @@ done
 echo "Renaming files"
 mv include/cstart.h "include/${proj_flat}.h"
 mv src/cstart.c "src/${proj_flat}.c"
-mv test/cstarttest.c "test/${proj_flat}test.c"
+mv test/cstart_test.c "test/${proj_flat}test.c"
 
 echo "Deleting init script"
+rm .github/workflows/init-template-test.yml
 rm -- "$0"
