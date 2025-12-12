@@ -1,5 +1,6 @@
 #include "cstart.h"
-#include "kcli.h"
+
+#include "kcli.inc"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
