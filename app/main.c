@@ -1,13 +1,17 @@
 #include "cstart.h"
-
+#include "cstart_macros.h"
 #include "kcli.inc"
+#include "ktl/lib/io.h"
+#include "ktl/lib/io.inc"
+#include "ktl/lib/strings.h"
+#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 struct opts
 {
-    char const *name;
+    char const *filename;
     bool verbose;
 };
 
@@ -19,10 +23,10 @@ static struct opts opts_parse(int const argc, char const *const *const argv)
         argc,
         argv,
         {
-            .pos_name = "name",
-            .ptr_str = &opts.name,
+            .pos_name = "file",
+            .ptr_str = &opts.filename,
             .optional = true,
-            .help = "Name to greet",
+            .help = "File to read",
         },
         {
             .short_name = 'v',
@@ -38,17 +42,36 @@ static struct opts opts_parse(int const argc, char const *const *const argv)
 int main(int const argc, char const *const *const argv)
 {
     struct opts opts = opts_parse(argc, argv);
+    cstart_verbose = opts.verbose;
 
-    if (opts.verbose)
+    FILE *input_file = NULL;
+
+    strbuf buf = strbuf_init();
+
+    if (opts.filename)
     {
-        fprintf(stderr, "c-start: Creating greeting...\n");
+        debugf("Reading name from: %s", opts.filename);
+        input_file = fopen(opts.filename, "r");
+        expectf_perror(
+            input_file && strbuf_append_stream(&buf, input_file),
+            "%s",
+            opts.filename
+        );
+    }
+    else
+    {
+        debugf("No file provided. Creating generic greeting...");
     }
 
-    char *greeting = cstart_create_greeting(opts.name);
+    if (input_file)
+    {
+        fclose(input_file);
+    }
 
+    char *greeting = cstart_create_greeting(buf.ptr);
     printf("%s\n", greeting);
-
     free(greeting);
 
-    return greeting ? 0 : 1;
+    strbuf_deinit(&buf);
+    return EXIT_SUCCESS;
 }

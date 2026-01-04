@@ -1,0 +1,56 @@
+#ifndef CSTART_MACROS_H_
+#define CSTART_MACROS_H_
+
+#include "cstart.h" // IWYU pragma: export
+
+#include <assert.h> // IWYU pragma: export
+#include <errno.h>  // IWYU pragma: export
+#include <stdio.h>  // IWYU pragma: export
+#include <stdlib.h> // IWYU pragma: export
+
+#define nodiscard cstart_nodiscard
+
+#define eprintf(...) fprintf(stderr, __VA_ARGS__)
+
+#define debugf(...)                                                            \
+    do                                                                         \
+    {                                                                          \
+        if (cstart_verbose)                                                    \
+        {                                                                      \
+            eprintf(__VA_ARGS__);                                              \
+            fprintf(stderr, "\n");                                             \
+        }                                                                      \
+    } while (0)
+
+#define panicf(...)                                                            \
+    do                                                                         \
+    {                                                                          \
+        eprintf(__VA_ARGS__);                                                  \
+        fprintf(stderr, "\n");                                                 \
+        fflush(stderr);                                                        \
+        assert(false);                                                         \
+        exit(EXIT_FAILURE);                                                    \
+    } while (0)
+
+#define expectf(cond, ...)                                                     \
+    do                                                                         \
+    {                                                                          \
+        if (!(cond))                                                           \
+        {                                                                      \
+            panicf(__VA_ARGS__);                                               \
+        }                                                                      \
+    } while (0)
+
+#define expectf_perror(cond, ...)                                              \
+    do                                                                         \
+    {                                                                          \
+        if (!(cond))                                                           \
+        {                                                                      \
+            eprintf(__VA_ARGS__);                                              \
+            panicf(": %s", strerror(errno));                                   \
+        }                                                                      \
+    } while (0)
+
+#define expect(cond) expectf((cond), "Failed condition: '" #cond "'")
+
+#endif

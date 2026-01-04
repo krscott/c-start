@@ -28,6 +28,7 @@ if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
     -Wno-padded
     -Wno-switch-default
     -Wno-used-but-marked-unused
+    -Wno-disabled-macro-expansion  # Triggers on `stdin` macro in stdio.h
     -Werror=sometimes-uninitialized)
 else()
   add_compile_options(-Wall -Wextra -pedantic)
