@@ -51,6 +51,7 @@
             cmake-format
             clang-tools # NOTE: clang-tools must come before clang
             clang
+            just
           ]
           ++ c-start.buildInputs;
 
@@ -96,9 +97,6 @@
           default = pkgs.mkShell {
             inputsFrom = [ c-start ];
             nativeBuildInputs = devPkgs;
-            shellHook = ''
-              source dev_shell.sh
-            '';
           };
         };
 
