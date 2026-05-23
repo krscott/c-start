@@ -14,7 +14,8 @@ if("$ENV{CC}" MATCHES ".*mingw32.*")
 endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(C_STANDARD 11)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
   add_compile_options(
