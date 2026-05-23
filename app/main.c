@@ -52,9 +52,10 @@ int main(int const argc, char const *const *const argv)
     {
         debugf("Reading name from: %s", opts.filename);
         input_file = fopen(opts.filename, "r");
-        expectf_perror(
-            input_file && strbuf_append_stream(&buf, input_file),
-            "%s",
+        expectf_perror(input_file, "%s", opts.filename);
+        expectf(
+            strbuf_append_stream(&buf, input_file),
+            "Failed to read: %s",
             opts.filename
         );
     }
