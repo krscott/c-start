@@ -7,6 +7,7 @@
 #include <errno.h>  // IWYU pragma: export
 #include <stdio.h>  // IWYU pragma: export
 #include <stdlib.h> // IWYU pragma: export
+#include <string.h> // IWYU pragma: export
 
 #define nodiscard cstart_nodiscard
 
@@ -46,8 +47,9 @@
     {                                                                          \
         if (!(cond))                                                           \
         {                                                                      \
+            int const saved_errno = errno;                                     \
             eprintf(__VA_ARGS__);                                              \
-            panicf(": %s", strerror(errno));                                   \
+            panicf(": %s", strerror(saved_errno));                             \
         }                                                                      \
     } while (0)
 
