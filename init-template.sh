@@ -22,20 +22,30 @@ proj_underscore=$(echo "$proj" | tr '-' '_')
 
 proj_upper=$(echo "$proj_flat" | tr '[:lower:]' '[:upper:]')
 
-cd "$(dirname "$(readlink -f -- "$0")")"
+script_dir=$(CDPATH='' cd "$(dirname "$0")" && pwd -P)
+cd "$script_dir"
 
 if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     echo "init-template.sh must be run from a git checkout." >&2
     exit 1
 fi
 
-for file in $(git ls-files | grep -v 'init-template.sh'); do
+git ls-files | while IFS= read -r file; do
+    if [ "$file" = 'init-template.sh' ]; then
+        continue
+    fi
+
     if [ -e "$file" ]; then
         echo "Processing: $file"
-        sed -i "s/cstart/$proj_flat/g" "$file"
-        sed -i "s/c-start/$proj_hyphen/g" "$file"
-        sed -i "s/c_start/$proj_underscore/g" "$file"
-        sed -i "s/CSTART/$proj_upper/g" "$file"
+        tmp="${file}.tmp.$$"
+        cp "$file" "$tmp"
+        sed \
+            -e "s/cstart/$proj_flat/g" \
+            -e "s/c-start/$proj_hyphen/g" \
+            -e "s/c_start/$proj_underscore/g" \
+            -e "s/CSTART/$proj_upper/g" \
+            "$file" >"$tmp"
+        mv "$tmp" "$file"
     fi
 done
 
