@@ -18,6 +18,18 @@ jobs:
 
     - name: Check init-template.sh
       run: |
+        if ./init-template.sh 'bad/name'; then
+          echo "init-template.sh accepted an invalid project name" >&2
+          exit 1
+        fi
+
+        tmp="$(mktemp -d)"
+        cp init-template.sh "$tmp/"
+        if "$tmp/init-template.sh" valid-name; then
+          echo "init-template.sh ran outside a git checkout" >&2
+          exit 1
+        fi
+
         ./init-template.sh my-test_app
 
     - name: build

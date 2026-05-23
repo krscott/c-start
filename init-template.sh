@@ -8,6 +8,14 @@ fi
 
 proj="$1"
 
+case "$proj" in
+*[!A-Za-z0-9_-]* | '')
+    echo "Invalid project name: $proj" >&2
+    echo "Project name may only contain letters, numbers, hyphens, and underscores." >&2
+    exit 1
+    ;;
+esac
+
 proj_flat=$(echo "$proj" | tr -d '_' | tr -d '-')
 proj_hyphen=$(echo "$proj" | tr '_' '-')
 proj_underscore=$(echo "$proj" | tr '-' '_')
@@ -15,6 +23,11 @@ proj_underscore=$(echo "$proj" | tr '-' '_')
 proj_upper=$(echo "$proj_flat" | tr '[:lower:]' '[:upper:]')
 
 cd "$(dirname "$(readlink -f -- "$0")")"
+
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "init-template.sh must be run from a git checkout." >&2
+    exit 1
+fi
 
 for file in $(git ls-files | grep -v 'init-template.sh'); do
     if [ -e "$file" ]; then
