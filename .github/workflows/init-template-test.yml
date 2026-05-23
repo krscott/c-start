@@ -16,3 +16,7 @@ jobs:
     - name: Check init-template.sh
       run: |
         ./init-template.sh my-test_app
+        cmake -B build
+        cmake --build build
+        ctest --test-dir build --output-on-failure
+        ./build/app/mytestapp --help

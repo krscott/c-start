@@ -28,6 +28,7 @@ done
 
 echo "Renaming files"
 mv include/cstart.h "include/${proj_flat}.h"
+mv include/cstart_macros.h "include/${proj_flat}_macros.h"
 mv src/cstart.c "src/${proj_flat}.c"
 mv test/cstart_test.c "test/${proj_flat}test.c"
 
