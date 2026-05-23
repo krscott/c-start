@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+declare -a staged_files
+declare -A partially_staged
+
+mapfile -d '' -t staged_files < <(
+    git diff --cached --name-only --diff-filter=ACMR -z
+)
+
+# Files with both staged and unstaged changes — skip these to avoid
+# clobbering partial staging (git add -p)
+while IFS= read -r -d '' file; do
+    partially_staged["$file"]=1
+done < <(git diff --name-only -z)
+
+pre_commit_ext() {
+    local pattern="$1"
+    shift
+    local -a changed_files=()
+    local file
+
+    if (($# == 0)); then
+        echo "pre_commit_ext: missing command" >&2
+        return 1
+    fi
+
+    for file in "${staged_files[@]}"; do
+        [[ -v partially_staged["$file"] ]] && continue
+        # shellcheck disable=SC2254
+        case "$file" in
+        $pattern)
+            changed_files+=("$file")
+            ;;
+        esac
+    done
+
+    if ((${#changed_files[@]} == 0)); then
+        return 0
+    fi
+
+    "$@" "${changed_files[@]}"
+    git add -- "${changed_files[@]}"
+}
+
+isdef() {
+    command -v "$1" >/dev/null
+}
+
+isdef nix && pre_commit_ext '*.nix' nix fmt --
+isdef shfmt && pre_commit_ext '*.sh' shfmt -w -i 4
+isdef shellcheck && pre_commit_ext '*.sh' shellcheck
