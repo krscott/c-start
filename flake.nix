@@ -102,7 +102,7 @@
 
         apps = {
           format = mkApp ''
-            ./format.sh
+            just format
           '';
         };
 
