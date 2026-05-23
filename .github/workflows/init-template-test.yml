@@ -34,5 +34,6 @@ jobs:
 
     - name: build
       run: |
+        git add -A
         nix build -L
         ./result/bin/mytestapp --help
